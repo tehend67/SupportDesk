@@ -1,0 +1,67 @@
+# Настройки с секретами
+.env
+.env.*
+!.env.example
+
+# Базы данных
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+ENV/
+
+# Кэши и отчёты
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+
+# Node
+node_modules/
+npm-debug.log*
+.npm/
+
+# Фронтенд
+frontend/dist/
+
+# Логи и временное
+*.log
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ассеты приложения, не нужные в репозитории
+.freebuff/
