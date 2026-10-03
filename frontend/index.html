@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Support Desk</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <span class="glow g1"></span>
+    <span class="glow g2"></span>
+    <span class="glow g3"></span>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor-light" id="cursor-light" aria-hidden="true"></div>
+  <div id="backdrop" class="backdrop"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">
+        <span class="ping"></span>
+        <span class="ping delay"></span>
+        <span class="glyph">AI</span>
+      </span>
+      <span class="brand-name">Support Desk</span>
+    </div>
+
+    <div class="ws-switch" id="ws-switch">
+      <button class="ws-trigger" id="ws-trigger" type="button">
+        <span class="ws-dot"></span>
+        <span id="ws-name">нет команды</span>
+        <svg class="icon ws-caret" aria-hidden="true"><use href="#i-chevron" /></svg>
+      </button>
+      <div class="ws-menu" id="ws-menu">
+        <div class="ws-menu-head">Ваши команды</div>
+        <div id="ws-list" class="ws-list"></div>
+        <button class="ws-create" id="ws-create" type="button">
+          <svg class="icon" aria-hidden="true"><use href="#i-plus" /></svg>
+          <span>Создать команду</span>
+        </button>
+      </div>
+    </div>
+
+    <nav class="topnav">
+      <button class="navlink active" data-view="overview" data-icon="i-overview">
+        <svg class="icon" aria-hidden="true"><use href="#i-overview" /></svg><span>Обзор</span>
+      </button>
+      <button class="navlink" data-open="drawer-tickets" data-icon="i-tickets">
+        <svg class="icon" aria-hidden="true"><use href="#i-tickets" /></svg><span>Обращения</span>
+      </button>
+      <button class="navlink" data-open="drawer-knowledge" data-icon="i-knowledge">
+        <svg class="icon" aria-hidden="true"><use href="#i-knowledge" /></svg><span>База знаний</span>
+      </button>
+      <button class="navlink" data-open="drawer-team" data-icon="i-team">
+        <svg class="icon" aria-hidden="true"><use href="#i-team" /></svg><span>Команда</span>
+      </button>
+      <button class="navlink" data-open="drawer-integrations" data-icon="i-integrations">
+        <svg class="icon" aria-hidden="true"><use href="#i-integrations" /></svg><span>Интеграции</span>
+      </button>
+    </nav>
+
+    <div class="userbox">
+      <span id="user-chip" class="chip">гость</span>
+      <button id="auth-trigger" class="btn btn-ghost"><svg class="icon" aria-hidden="true"><use href="#i-user" /></svg><span>Войти</span></button>
+      <button id="logout" class="btn btn-ghost hidden"><svg class="icon" aria-hidden="true"><use href="#i-logout" /></svg><span>Выйти</span></button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <section id="hero" class="hero" aria-label="Возможности AI Support Desk">
+      <div class="hero-bg" aria-hidden="true">
+        <span class="hero-grid"></span>
+        <span class="hero-orb hero-orb-a"></span>
+        <span class="hero-orb hero-orb-b"></span>
+        <span class="hero-orb hero-orb-c"></span>
+        <span class="hero-sweep"></span>
+      </div>
+
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <span class="hero-eyebrow">
+            <svg class="icon" aria-hidden="true"><use href="#i-sparkle" /></svg>
+            <span>Мультиканальная ИИ-поддержка</span>
+          </span>
+          <h1 class="hero-title">Один ассистент<br />на Telegram, сайт и&nbsp;API</h1>
+          <p class="hero-lead">
+            Создайте комнату своей компании, подключите каналы за три шага и отвечайте клиентам
+            из одной панели. Рутину заберёт ИИ, сложные случаи — ваша команда.
+          </p>
+          <div class="hero-actions">
+            <button class="btn" data-open="modal-auth" data-auth-mode="register" type="button">
+              <svg class="icon" aria-hidden="true"><use href="#i-plus" /></svg><span>Создать команду</span>
+            </button>
+            <button class="btn btn-ghost" data-open="modal-auth" type="button">
+              <svg class="icon" aria-hidden="true"><use href="#i-user" /></svg><span>Войти</span>
+            </button>
+          </div>
+          <ul class="hero-channels">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-telegram" /></svg><span>Telegram-бот</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-globe" /></svg><span>Веб-виджет</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-code" /></svg><span>REST API</span></li>
+          </ul>
+        </div>
+
+        <div class="hero-visual">
+          <svg class="hero-orbit" viewBox="0 0 480 480" role="img" aria-label="Каналы обращений вокруг ИИ-ядра">
+            <defs>
+              <radialGradient id="core-glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(29,90,71,0.20)" />
+                <stop offset="68%" stop-color="rgba(29,90,71,0)" />
+              </radialGradient>
+              <radialGradient id="core-shadow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(20,22,27,0.30)" />
+                <stop offset="72%" stop-color="rgba(20,22,27,0)" />
+              </radialGradient>
+            </defs>
+
+            <circle class="hero-core-glow" cx="240" cy="240" r="180" fill="url(#core-glow)" />
+
+            <g class="hero-pulses">
+              <rect x="186" y="186" width="108" height="108" rx="2" />
+              <rect x="186" y="186" width="108" height="108" rx="2" />
+              <rect x="186" y="186" width="108" height="108" rx="2" />
+            </g>
+
+            <circle class="hero-ring hero-ring-1" cx="240" cy="240" r="178" />
+            <circle class="hero-ring hero-ring-2" cx="240" cy="240" r="124" />
+
+            <g class="hero-links">
+              <line x1="240" y1="240" x2="240" y2="62" />
+              <line x1="240" y1="240" x2="394" y2="329" />
+              <line x1="240" y1="240" x2="86" y2="329" />
+            </g>
+
+            <g class="hero-node" style="--d: 0s">
+              <rect x="208" y="30" width="64" height="64" rx="2" />
+              <g class="hero-node-ico" transform="translate(224 46) scale(1.333)">
+                <path d="M20.8 4.2 3.9 10.9c-.9.35-.87 1.62.04 1.92l4.5 1.58 1.72 5.2c.28.85 1.4 1 1.9.3l2.5-3.3 4.6 3.4c.65.47 1.57.1 1.7-.68L21.7 5.1c.13-.8-.6-1.2-.9-.9Z" />
+                <path d="M20.8 4.2 8.4 14.4" />
+              </g>
+              <text x="240" y="118">Telegram</text>
+            </g>
+
+            <g class="hero-node" style="--d: -3s">
+              <rect x="362" y="297" width="64" height="64" rx="2" />
+              <g class="hero-node-ico" transform="translate(378 313) scale(1.333)">
+                <circle cx="12" cy="12" r="8.5" />
+                <path d="M3.5 12h17" />
+                <path d="M12 3.5c2.4 2.6 3.6 5.4 3.6 8.5s-1.2 5.9-3.6 8.5c-2.4-2.6-3.6-5.4-3.6-8.5S9.6 6.1 12 3.5Z" />
+              </g>
+              <text x="394" y="385">Веб-виджет</text>
+            </g>
+
+            <g class="hero-node" style="--d: -6s">
+              <rect x="54" y="297" width="64" height="64" rx="2" />
+              <g class="hero-node-ico" transform="translate(70 313) scale(1.333)">
+                <path d="M9 7 4.6 12 9 17" />
+                <path d="M15 7l4.4 5-4.4 5" />
+                <path d="M13.4 4.6 10.6 19.4" />
+              </g>
+              <text x="86" y="385">REST API</text>
+            </g>
+
+            <ellipse class="hero-core-shadow" cx="248" cy="304" rx="76" ry="19" fill="url(#core-shadow)" />
+
+            <g class="hero-core">
+              <rect x="186" y="186" width="108" height="108" rx="2" />
+              <text x="240" y="241" text-anchor="middle" dominant-baseline="middle">AI</text>
+            </g>
+          </svg>
+
+          <div class="hero-card hero-card-a" style="--d: .5s">
+            <span class="hero-card-tag">ИИ</span>
+            <p>Ответил по базе знаний за 1,2 сек</p>
+          </div>
+          <div class="hero-card hero-card-b" style="--d: 1.1s">
+            <span class="hero-card-dot"></span>
+            <p>Эскалация на оператора при негативе</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-strip" aria-hidden="true">
+        <div class="hero-strip-track">
+          <span>Telegram</span><span>Веб-виджет</span><span>REST API</span><span>База знаний</span>
+          <span>Аналитика</span><span>Роли и доступы</span><span>Эскалация</span><span>Мультиарендность</span>
+          <span>Telegram</span><span>Веб-виджет</span><span>REST API</span><span>База знаний</span>
+          <span>Аналитика</span><span>Роли и доступы</span><span>Эскалация</span><span>Мультиарендность</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-overview" class="view">
+      <div class="view-head">
+        <h1>Обзор поддержки</h1>
+        <p class="muted" id="view-subtitle">Метрики по всем каналам: Telegram, веб-виджет, API</p>
+      </div>
+      <div id="kpis" class="kpis"></div>
+      <div class="charts">
+        <figure class="chart-card">
+          <figcaption>Динамика обращений за 14 дней</figcaption>
+          <div id="chart-timeline" class="chart-svg"></div>
+        </figure>
+        <figure class="chart-card">
+          <figcaption>Распределение по каналам</figcaption>
+          <div id="chart-channels" class="chart-svg"></div>
+        </figure>
+      </div>
+      <div class="panel-row">
+        <section class="panel">
+          <header class="panel-head">
+            <h3>Последние обращения</h3>
+            <button class="btn btn-ghost" data-open="drawer-tickets" type="button">
+              <span>Все</span><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </button>
+          </header>
+          <div id="recent-tickets" class="dense-list"></div>
+        </section>
+
+        <section class="panel">
+          <header class="panel-head">
+            <h3>Скорость и качество</h3>
+          </header>
+          <div id="speed-meters" class="meters"></div>
+        </section>
+
+        <section class="panel">
+          <header class="panel-head">
+            <h3>Быстрые действия</h3>
+          </header>
+          <div class="quick-actions">
+            <button class="btn" data-open="drawer-integrations" type="button">
+              <svg class="icon" aria-hidden="true"><use href="#i-globe" /></svg><span>Подключить веб-виджет</span>
+            </button>
+            <button class="btn btn-ghost" data-open="modal-doc" type="button">
+              <svg class="icon" aria-hidden="true"><use href="#i-doc" /></svg><span>Загрузить в базу знаний</span>
+            </button>
+            <button class="btn btn-ghost" data-open="drawer-team" type="button">
+              <svg class="icon" aria-hidden="true"><use href="#i-team" /></svg><span>Пригласить сотрудника</span>
+            </button>
+            <button class="btn btn-ghost" id="qa-new-room" type="button">
+              <svg class="icon" aria-hidden="true"><use href="#i-plus" /></svg><span>Создать новую команду</span>
+            </button>
+          </div>
+          <p class="panel-hint">Ключи интеграций, REST API и Telegram — в разделе «Интеграции».</p>
+        </section>
+      </div>
+
+      <div id="gate" class="gate">
+        <p>Войдите или создайте аккаунт, чтобы открыть свою комнату поддержки и подключить каналы.</p>
+        <button class="btn" data-open="modal-auth">
+          <svg class="icon" aria-hidden="true"><use href="#i-sparkle" /></svg>
+          <span>Войти или зарегистрироваться</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <aside id="drawer-tickets" class="drawer drawer-left" aria-hidden="true">
+    <header class="drawer-head">
+      <div>
+        <h2>Обращения</h2>
+        <p class="muted" id="tickets-count">—</p>
+      </div>
+      <button class="icon-btn" data-close="drawer-tickets" title="Закрыть">✕</button>
+    </header>
+    <div class="drawer-tools">
+      <select id="filter-status">
+        <option value="">Все статусы</option>
+        <option value="open">open</option>
+        <option value="pending">pending</option>
+        <option value="escalated">escalated</option>
+        <option value="resolved">resolved</option>
+        <option value="closed">closed</option>
+      </select>
+      <select id="filter-channel">
+        <option value="">Все каналы</option>
+        <option value="telegram">telegram</option>
+        <option value="web">web</option>
+        <option value="api">api</option>
+      </select>
+      <input id="filter-search" placeholder="Тема, клиент или номер" />
+      <button id="tickets-refresh" class="btn btn-ghost" type="button"><svg class="icon" aria-hidden="true"><use href="#i-refresh" /></svg><span>Обновить</span></button>
+    </div>
+    <div id="tickets-list" class="list scroll"></div>
+  </aside>
+
+  <aside id="drawer-ticket" class="drawer drawer-right drawer-top" aria-hidden="true">
+    <header class="drawer-head">
+      <div>
+        <h2 id="ticket-title">Обращение</h2>
+        <p class="muted" id="ticket-meta">—</p>
+      </div>
+      <button class="icon-btn" data-close="drawer-ticket" title="Закрыть">✕</button>
+    </header>
+    <div class="drawer-tools">
+      <span id="ticket-status" class="tag">—</span>
+      <span id="ticket-priority" class="tag">—</span>
+      <button id="ticket-actions" class="btn btn-ghost" type="button"><svg class="icon" aria-hidden="true"><use href="#i-sliders" /></svg><span>Изменить</span></button>
+    </div>
+    <div id="ticket-messages" class="messages scroll"></div>      <form id="reply-form" class="composer">
+        <textarea id="reply-text" rows="2" placeholder="Ответ оператора"></textarea>
+        <button class="btn" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-send" /></svg><span>Отправить</span></button>
+      </form>
+  </aside>
+
+  <aside id="drawer-knowledge" class="drawer drawer-right" aria-hidden="true">
+    <header class="drawer-head">
+      <div>
+        <h2>База знаний</h2>
+        <p class="muted" id="kb-count">—</p>
+      </div>
+      <button class="icon-btn" data-close="drawer-knowledge" title="Закрыть">✕</button>
+    </header>
+    <div class="drawer-tools">
+      <input id="kb-query" placeholder="Семантический поиск по документам" />
+      <button id="kb-search" class="btn btn-ghost" type="button"><svg class="icon" aria-hidden="true"><use href="#i-search" /></svg><span>Искать</span></button>
+      <button class="btn" data-open="modal-doc" type="button"><svg class="icon" aria-hidden="true"><use href="#i-doc" /></svg><span>Документ</span></button>
+    </div>
+    <div id="kb-results" class="list"></div>
+    <div class="drawer-sub"><h3>Документы</h3></div>
+    <div id="kb-documents" class="list scroll"></div>
+  </aside>
+
+  <aside id="drawer-team" class="drawer drawer-right" aria-hidden="true">
+    <header class="drawer-head">
+      <div>
+        <h2>Команда</h2>
+        <p class="muted" id="team-count">—</p>
+      </div>
+      <button class="icon-btn" data-close="drawer-team" title="Закрыть">✕</button>
+    </header>
+    <div class="drawer-tools">
+      <button class="btn" id="team-add" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus" /></svg><span>Добавить сотрудника</span></button>
+      <button class="btn btn-ghost" id="team-refresh" type="button"><svg class="icon" aria-hidden="true"><use href="#i-refresh" /></svg><span>Обновить</span></button>
+    </div>
+    <div id="team-list" class="list scroll"></div>
+  </aside>
+
+  <aside id="drawer-integrations" class="drawer drawer-right" aria-hidden="true">
+    <header class="drawer-head">
+      <div>
+        <h2>Интеграции</h2>
+        <p class="muted" id="int-subtitle">Подключите этот проект к своему бизнесу</p>
+      </div>
+      <button class="icon-btn" data-close="drawer-integrations" title="Закрыть">✕</button>
+    </header>
+    <div id="int-body" class="int-body scroll"></div>
+  </aside>
+
+  <div id="modal-auth" class="modal">
+    <div class="sheet">
+      <header class="sheet-head">
+        <h2 id="auth-title">Вход</h2>
+        <button class="icon-btn" data-close="modal-auth" title="Закрыть">✕</button>
+      </header>
+      <div class="tabs">
+        <button class="tab active" data-auth-tab="login" type="button">Вход</button>
+        <button class="tab" data-auth-tab="register" type="button">Регистрация</button>
+        <span class="tab-underline" id="auth-underline"></span>
+      </div>
+      <form id="auth-form" class="sheet-body">
+        <label id="field-name" class="field hidden">Имя
+          <input id="auth-name" autocomplete="name" placeholder="Как к вам обращаться" />
+        </label>
+        <label class="field">Email
+          <input id="auth-email" type="email" autocomplete="username" required />
+        </label>
+        <label class="field">Пароль
+          <input id="auth-password" type="password" autocomplete="current-password" required />
+        </label>
+        <p id="auth-hint" class="muted">Минимум 8 символов.</p>
+        <p id="auth-error" class="error"></p>
+        <button class="btn btn-block" type="submit" id="auth-submit">Войти</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="modal-workspace" class="modal">
+    <div class="sheet">
+      <header class="sheet-head">
+        <h2>Новая команда</h2>
+        <button class="icon-btn" data-close="modal-workspace" title="Закрыть">✕</button>
+      </header>
+      <form id="workspace-form" class="sheet-body">
+        <p class="muted">Комната — это отдельное пространство: свои обращения, база знаний, сотрудники и каналы.</p>
+        <label class="field">Название компании
+          <input id="workspace-name" placeholder="Например, Ромашка" required />
+        </label>
+        <p id="workspace-error" class="error"></p>
+        <div class="sheet-actions">
+          <button class="btn btn-ghost" type="button" data-close="modal-workspace">Отмена</button>
+          <button class="btn" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-plus" /></svg><span>Создать команду</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modal-member" class="modal">
+    <div class="sheet">
+      <header class="sheet-head">
+        <h2>Добавить сотрудника</h2>
+        <button class="icon-btn" data-close="modal-member" title="Закрыть">✕</button>
+      </header>
+      <form id="member-form" class="sheet-body">
+        <label class="field">Email
+          <input id="member-email" type="email" required />
+        </label>
+        <label class="field">Имя
+          <input id="member-name" placeholder="Имя сотрудника" />
+        </label>
+        <label class="field">Роль
+          <select id="member-role">
+            <option value="agent">agent — отвечает на обращения</option>
+            <option value="admin">admin — управляет командой и каналами</option>
+          </select>
+        </label>
+        <label class="field">Пароль (если сотрудник новый)
+          <input id="member-password" type="text" placeholder="минимум 8 символов" />
+        </label>
+        <p id="member-error" class="error"></p>
+        <div class="sheet-actions">
+          <button class="btn btn-ghost" type="button" data-close="modal-member">Отмена</button>
+          <button class="btn" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-team" /></svg><span>Добавить</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modal-actions" class="modal">
+    <div class="sheet">
+      <header class="sheet-head">
+        <h2>Статус и приоритет</h2>
+        <button class="icon-btn" data-close="modal-actions" title="Закрыть">✕</button>
+      </header>
+      <form id="actions-form" class="sheet-body">
+        <label class="field">Статус
+          <select id="action-status">
+            <option value="open">open</option>
+            <option value="pending">pending</option>
+            <option value="escalated">escalated</option>
+            <option value="resolved">resolved</option>
+            <option value="closed">closed</option>
+          </select>
+        </label>
+        <label class="field">Приоритет
+          <select id="action-priority">
+            <option value="low">low</option>
+            <option value="normal">normal</option>
+            <option value="high">high</option>
+            <option value="urgent">urgent</option>
+          </select>
+        </label>
+        <div class="sheet-actions">
+          <button class="btn btn-ghost" type="button" data-close="modal-actions">Отмена</button>
+          <button class="btn" type="submit">Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modal-doc" class="modal">
+    <div class="sheet">
+      <header class="sheet-head">
+        <h2>Новый документ</h2>
+        <button class="icon-btn" data-close="modal-doc" title="Закрыть">✕</button>
+      </header>
+      <form id="doc-form" class="sheet-body">
+        <label class="field">Заголовок<input id="doc-title" required /></label>
+        <label class="field">Источник<input id="doc-source" placeholder="manual" /></label>
+        <label class="field">Текст<textarea id="doc-content" rows="7" required></textarea></label>
+        <p id="doc-status" class="muted"></p>
+        <div class="sheet-actions">
+          <button class="btn btn-ghost" type="button" data-close="modal-doc">Отмена</button>
+          <button class="btn" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-doc" /></svg><span>Загрузить и проиндексировать</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modal-confirm" class="modal">
+    <div class="sheet sheet-sm">
+      <header class="sheet-head">
+        <h2 id="confirm-title">Подтверждение</h2>
+        <button class="icon-btn" data-close="modal-confirm" title="Закрыть">✕</button>
+      </header>
+      <div class="sheet-body">
+        <p id="confirm-text" class="muted"></p>
+        <div class="sheet-actions">
+          <button class="btn btn-ghost" type="button" data-close="modal-confirm">Отмена</button>
+          <button class="btn btn-danger" id="confirm-ok" type="button">Удалить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toasts" class="toasts"></div>
+
+  <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-overview" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8.5 16.5v-4.5M12.5 16.5V7M16.5 16.5v-6.5"/></symbol>
+    <symbol id="i-tickets" viewBox="0 0 24 24"><path d="M4 6.5h16M4 12h16M4 17.5h10"/></symbol>
+    <symbol id="i-knowledge" viewBox="0 0 24 24"><path d="M4.5 4.8A1.8 1.8 0 0 1 6.3 3H19v15.5H6.3a1.8 1.8 0 0 0-1.8 1.7V4.8Z"/><path d="M4.5 19.5A1.8 1.8 0 0 1 6.3 18.5H19V21H6.3a1.8 1.8 0 0 1-1.8-1.5Z"/><path d="M8.5 7.5h6.5M8.5 11h4.5"/></symbol>
+    <symbol id="i-team" viewBox="0 0 24 24"><circle cx="9.2" cy="8.4" r="3.2"/><path d="M3.6 19.6c0-3.1 2.5-5.2 5.6-5.2s5.6 2.1 5.6 5.2"/><path d="M16.2 5.6a3.2 3.2 0 0 1 0 6.2"/><path d="M17.4 14.6c2.1.5 3.4 2.2 3.4 5"/></symbol>
+    <symbol id="i-integrations" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5"/><path d="M6 8h12v3.2a6 6 0 0 1-12 0V8Z"/><path d="M12 17.2V21"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.4 2.6 3.6 5.4 3.6 8.5s-1.2 5.9-3.6 8.5c-2.4-2.6-3.6-5.4-3.6-8.5S9.6 6.1 12 3.5Z"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="M9 7 4.6 12 9 17"/><path d="M15 7l4.4 5-4.4 5"/><path d="M13.4 4.6 10.6 19.4"/></symbol>
+    <symbol id="i-telegram" viewBox="0 0 24 24"><path d="M20.8 4.2 3.9 10.9c-.9.35-.87 1.62.04 1.92l4.5 1.58 1.72 5.2c.28.85 1.4 1 1.9.3l2.5-3.3 4.6 3.4c.65.47 1.57.1 1.7-.68L21.7 5.1c.13-.8-.6-1.2-0.9-0.9Z"/><path d="M20.8 4.2 8.4 14.4"/></symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M12 2.6c3 2.1 4.6 5.6 4.6 9.1l-2.6 4.1H10L7.4 11.7C7.4 8.2 9 4.7 12 2.6Z"/><circle cx="12" cy="10" r="1.5"/><path d="M9.6 15.8c-1.5.6-2.5 1.6-2.8 3.1 1.9-.3 3-1.1 3.6-2.4"/><path d="M14.4 15.8c1.5.6 2.5 1.6 2.8 3.1-1.9-.3-3-1.1-3.6-2.4"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.8" cy="12" r="3.6"/><path d="M11.4 12H20.5"/><path d="M17 12v3.4M14.4 12v2.4"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20.6 11.8c0 4.3-3.8 7.8-8.6 7.8-1 0-2-.14-2.9-.4L4.2 21l1.5-3.7c-1.4-1.4-2.2-3.2-2.2-5.5 0-4.3 3.8-7.8 8.6-7.8s8.5 3.5 8.5 7.8Z"/><path d="M8.8 11.9h6.4M8.8 14.6h4"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M20.5 3.5 10.6 13.4"/><path d="M20.5 3.5 14 20.7l-3.4-7.3-7.3-3.4 17.2-6.5Z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.6" y="8.6" width="11.4" height="11.4" rx="1.6"/><path d="M15.4 5.6V5A1.4 1.4 0 0 0 14 3.6H5.6A1.4 1.4 0 0 0 4.2 5v8.4a1.4 1.4 0 0 0 1.4 1.4h.6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.6 9.4 17 19 7.2"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20.2 12a8.2 8.2 0 1 1-2.4-5.8"/><path d="M20.4 3.9v4.7h-4.7"/></symbol>
+    <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 3.2v8.6"/><path d="M7.4 6.4a7.2 7.2 0 1 0 9.2 0"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6.4 6.4 17.6 17.6M17.6 6.4 6.4 17.6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6.5 9.5 12 15l5.5-5.5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.6 12h14.2"/><path d="M13.4 6.8 18.8 12l-5.4 5.2"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5.2v13.6M5.2 12h13.6"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.4" r="3.4"/><path d="M5.2 20c0-3.6 3-6 6.8-6s6.8 2.4 6.8 6"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M14.6 4.2h3.2a1.8 1.8 0 0 1 1.8 1.8v12a1.8 1.8 0 0 1-1.8 1.8h-3.2"/><path d="M10.4 8.2 6.2 12l4.2 3.8"/><path d="M6.2 12h8.4"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.4" y="10" width="15.2" height="10.6" rx="1.8"/><path d="M8.2 10V7.6a3.8 3.8 0 0 1 7.6 0V10"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M10.4 3.4 12 8.2l4.8 1.6L12 11.4l-1.6 4.8L8.8 11.4 4 9.8l4.8-1.6 1.6-4.8Z"/><path d="M17.8 14.4l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6Z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.4"/><path d="M15.8 15.8 20 20"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 8h9M17.4 8H20M4 16h3.4M11.8 16H20"/><circle cx="15.2" cy="8" r="2.1"/><circle cx="9.6" cy="16" r="2.1"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6.2 3h7.6l4.2 4.2V21H6.2V3Z"/><path d="M13.6 3v4.4h4.4"/><path d="M9.2 12.4h5.6M9.2 16h5.6"/></symbol>
+  </svg>
+
+  <script src="./app.js"></script>
+</body>
+</html>
